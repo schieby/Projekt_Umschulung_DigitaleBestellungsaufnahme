@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DigitalisierungBestellungJosera.Models.Produkt>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Produkte</h1>
+
+<p>
+    <a class="link" asp-action="Create">Neues Produkt hinzufügen</a>
+</p>
+<table class="table">
+    @* <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ChargeNr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preis_in_EURO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gewicht_in_KG)
+            </th>
+            <th></th>
+        </tr>
+    </thead> *@
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    <strong>Produkt: </strong><div>@Html.DisplayFor(modelItem => item.Name)</div>
+            </td>
+            <td>
+                    <strong>ChargeNr: </strong><div>@Html.DisplayFor(modelItem => item.ChargeNr)</div>
+            </td>            
+            <td>
+                    <strong>Preis: </strong><div>@Html.DisplayFor(modelItem => item.Preis_in_EURO) €</div>
+            </td>
+            <td>
+                    <strong>Gewicht: </strong><div>@Html.DisplayFor(modelItem => item.Gewicht_in_KG) Kg</div>
+            </td>
+                <td class="actions-cell">
+                    <a class="link" asp-action="Edit" asp-route-id="@item.Id">Bearbeiten</a> |
+                    <a class="link" asp-action="Delete" asp-route-id="@item.Id">Löschen</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,45 @@
+﻿@model DigitalisierungBestellungJosera.Models.Produkt
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Produkt Löschen</h1>
+
+<h3>Sind Sie sich sicher, dass Sie die Tour löschen möchten?</h3>
+<div>
+    <h4>Produkt</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChargeNr)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChargeNr)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Preis_in_EURO)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Preis_in_EURO)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gewicht_in_KG)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gewicht_in_KG)
+        </dd>
+    </dl>
+    
+    <form class="link" asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Löschen" class="btn btn-danger" /> |
+        <a class="link" asp-action="Index">Zurück</a>
+    </form>
+</div>

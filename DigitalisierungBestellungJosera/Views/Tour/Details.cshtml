@@ -1,0 +1,106 @@
+﻿@model DigitalisierungBestellungJosera.Models.Tour
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Tour Details</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Datum)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Datum)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxLadegewicht_in_KG)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxLadegewicht_in_KG)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxStellplatz)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxStellplatz)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div><a class="link" asp-action="Edit" asp-route-id="@Model?.ID">Bearbeiten</a> |</div>
+    <div><a class="link" asp-action="Index">Zurück</a></div>
+</div>
+<div>
+    <br /> <br />
+    <h4>Bestellung</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-10">
+            <table class="table">
+               @*  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                </tr> *@
+                @foreach (var item in Model.Bestellungen)
+                {
+                    <tr>
+                        <td>
+                            <strong>Kunde: </strong><div>
+                                @Html.DisplayFor(modelItem => item.Kunde.Vorname)
+                                @Html.DisplayFor(modelItem => item.Kunde.Name)
+                            </div>
+                        </td>
+                        <td>
+                            <strong>Adresse: </strong><div>
+                                @Html.DisplayFor(modelItem => item.Kunde.PLZ)
+                                @Html.DisplayFor(modelItem => item.Kunde.Ort)
+                                @Html.DisplayFor(modelItem => item.Kunde.Straße)
+                                @Html.DisplayFor(modelItem => item.Kunde.Nr) 
+                            </div>
+                        </td>
+   
+                        <td>
+        <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
+                        </td>
+                        <td><strong>Bestellung: </strong></td>
+    <td class="actions-cell">
+        
+        <div class="product-info">
+            
+                                @foreach (var position in item.Positionen)
+                                {
+                                    <div class="position">
+                                        <span>|@position.Produkt.Name</span>
+                                        
+                                        <span>|@position.Produkt.ChargeNr|</span>
+                                       
+                                        <span>@position.Stückzahl stk|</span>
+                                    </div>
+                                }
+                            </div>
+                        </td>                       
+
+                    </tr>
+                }
+               
+               
+            </table>
+        </dd>
+    </dl>
+</div>

@@ -4,6 +4,7 @@ using DigitalisierungBestellungJosera.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigitalisierungBestellungJosera.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240605081304_änderungposition")]
+    partial class änderungposition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,9 +111,6 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
                     b.Property<int>("ProduktId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Stückzahl")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BestellungId");
@@ -139,9 +139,8 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Preis_in_EURO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Preis_in_EURO")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -156,9 +155,6 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("BelegteStellplätze")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("Datum")
                         .HasColumnType("date");
 
@@ -171,9 +167,6 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("aktuellegewicht")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -404,13 +397,13 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
             modelBuilder.Entity("DigitalisierungBestellungJosera.Models.Position", b =>
                 {
                     b.HasOne("DigitalisierungBestellungJosera.Models.Bestellung", "Bestellung")
-                        .WithMany("Positionen")
+                        .WithMany("Position")
                         .HasForeignKey("BestellungId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DigitalisierungBestellungJosera.Models.Produkt", "Produkt")
-                        .WithMany("Positionen")
+                        .WithMany("Position")
                         .HasForeignKey("ProduktId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -473,7 +466,7 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
 
             modelBuilder.Entity("DigitalisierungBestellungJosera.Models.Bestellung", b =>
                 {
-                    b.Navigation("Positionen");
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("DigitalisierungBestellungJosera.Models.Kunde", b =>
@@ -483,7 +476,7 @@ namespace DigitalisierungBestellungJosera.Data.Migrations
 
             modelBuilder.Entity("DigitalisierungBestellungJosera.Models.Produkt", b =>
                 {
-                    b.Navigation("Positionen");
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("DigitalisierungBestellungJosera.Models.Tour", b =>

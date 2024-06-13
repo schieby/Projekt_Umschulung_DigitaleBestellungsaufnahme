@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DigitalisierungBestellungJosera.Models.Bestellung>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Bestellungen</h1>
+
+<p>
+    <a class="link" asp-action="Create">Neue Bestellung hinzufügen</a>
+</p>
+<table class="table">
+    @* <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BestellungsNr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bestelldatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kunde)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tour)
+            </th>
+            <th></th>
+        </tr>
+    </thead> *@
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    <strong>Tour: </strong><div>@Html.DisplayFor(modelItem => item.Tour.Name)</div>
+                </td>
+                <td>
+                    <strong>Kunde: </strong><div>
+                        @Html.DisplayFor(modelItem => item.Kunde.Vorname)
+                        @Html.DisplayFor(modelItem => item.Kunde.Name)
+                        </div>
+                </td>
+            <td>
+                    <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
+            </td>
+            <td>
+                    <strong>Bestelldatum: </strong><div>@Html.DisplayFor(modelItem => item.Bestelldatum)</div>
+            </td>
+            
+            
+                <td class="actions-cell">
+                    <a class="link" asp-action="Edit" asp-route-id="@item.Id">Bearbeiten</a> |
+                    <a class="link" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="link" asp-action="Delete" asp-route-id="@item.Id">Löschen</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

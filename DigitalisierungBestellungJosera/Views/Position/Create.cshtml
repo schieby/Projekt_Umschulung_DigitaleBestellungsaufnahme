@@ -1,0 +1,41 @@
+﻿@model DigitalisierungBestellungJosera.Models.Position
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Position erstellen</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProduktId" class="control-label"></label>
+                <select asp-for="ProduktId" class="form-control" asp-items="ViewBag.ProduktId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BestellungId" class="control-label"></label>
+                <select asp-for="BestellungId" class ="form-control" asp-items="ViewBag.BestellungId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stückzahl" class="control-label"></label>
+                <input asp-for="Stückzahl" class="form-control" />
+                <span asp-validation-for="Stückzahl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Erstellen" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="link" asp-action="Index">Zurück</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

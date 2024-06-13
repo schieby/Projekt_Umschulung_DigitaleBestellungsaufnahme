@@ -1,0 +1,66 @@
+﻿@model DigitalisierungBestellungJosera.Models.Kunde
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Kunden Details</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vorname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vorname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EMail)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EMail)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Telefonnummer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Telefonnummer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PLZ)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PLZ)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ort)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ort)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Straße)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Straße)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nr)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nr)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="link" asp-action="Edit" asp-route-id="@Model?.Id">Bearbeiten</a> |
+    <a class="link" asp-action="Index">Zurück</a>
+</div>

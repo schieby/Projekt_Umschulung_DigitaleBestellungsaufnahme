@@ -1,0 +1,71 @@
+﻿@model IEnumerable<DigitalisierungBestellungJosera.Models.Position>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Positionierung</h1>
+
+<p>
+    <a class="link" asp-action="Create">Neue Position hinzufügen</a>
+</p>
+
+@if (TempData.ContainsKey("StellplatzLimitError"))
+{
+    <div class="alert alert-alert" role="alert">
+        @TempData["StellplatzLimitError"]
+    </div>
+}
+
+<table class="table">
+   @*  <thead>
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.Bestellung)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bestellung.Kunde)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produkt)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Stückzahl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produkt.ChargeNr)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody> *@
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.Bestellung.BestellungsNr)</div>
+            </td>
+            <td>
+                <strong>Kunde: </strong><div>
+                    @Html.DisplayFor(modelItem => item.Bestellung.Kunde.Vorname)
+                    @Html.DisplayFor(modelItem => item.Bestellung.Kunde.Name)
+                </div>
+            </td>
+            <td>
+                <div class="product-info">
+                <div class="position">
+                        <span><strong>Produkt: </strong><div>@Html.DisplayFor(modelItem => item.Produkt.Name)</div></span>
+                        <span><strong>ChargeNr: </strong><div>@Html.DisplayFor(modelItem => item.Produkt.ChargeNr)</div></span>
+                        <span><strong>Stückzahl: </strong><div>@Html.DisplayFor(modelItem => item.Stückzahl) stk</div></span>
+                </div>
+                </div>
+            </td>
+            <td class="actions-cell">
+                <a class="link" asp-action="Edit" asp-route-id="@item.Id">Bearbeiten</a> |
+                <a class="link" asp-action="Delete" asp-route-id="@item.Id">Löschen</a>
+            </td>
+        </tr>
+}
+        
+    </tbody>
+</table>

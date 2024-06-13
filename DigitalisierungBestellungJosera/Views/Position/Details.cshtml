@@ -1,0 +1,36 @@
+﻿@model DigitalisierungBestellungJosera.Models.Position
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Positions Details</h1>
+
+<div>
+   
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stückzahl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stückzahl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bestellung)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bestellung.BestellungsNr)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Produkt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Produkt.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="link" asp-action="Edit" asp-route-id="@Model?.Id">Bearbeiten</a> |
+    <a class="link" asp-action="Index">Zurück</a>
+</div>

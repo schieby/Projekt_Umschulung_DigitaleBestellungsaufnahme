@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DigitalisierungBestellungJosera.Models.Tour>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Touren</h1>
+
+<p>
+    <a class="link" asp-action="Create">Neue Tour erstellen</a>
+</p>
+<div class="table-responsive">
+    <table class="table">
+       @*  <thead>
+            <tr>
+                <th>Name</th>
+                <th>Datum</th>
+                <th>Aktuelles Gewicht</th>
+                <th>Maximales Ladegewicht (KG)</th>
+                <th>Aktueller Stellplatz</th>
+                <th>Maximaler Stellplatz</th>
+                <th></th>
+            </tr>
+        </thead> *@
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>Tour: </strong> <div>@Html.DisplayFor(modelItem => item.Name)</div></td>
+                    <td><strong>Datum: </strong> <div>@Html.DisplayFor(modelItem => item.Datum)</div></td>
+                    <td><strong>aktuelles Gewicht: </strong> <div>@Html.DisplayFor(modelItem => item.aktuellegewicht) Kg</div></td>
+                    <td><strong>max Ladegewicht: </strong> <div>@Html.DisplayFor(modelItem => item.MaxLadegewicht_in_KG) Kg</div></td>
+                    <td><strong>aktueller Stellplatz: </strong> <div>@Html.DisplayFor(modelItem => item.AktuellerStellplatz)</div></td>
+                    <td><strong>max Stellplatz: </strong> <div>@Html.DisplayFor(modelItem => item.MaxStellplatz)</div></td>
+                    <td class ="actions-cell">
+                        <a class="link" asp-action="Edit" asp-route-id="@item.ID">Bearbeiten</a> |
+                        <a class="link" asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a class="link" asp-action="Delete" asp-route-id="@item.ID">Löschen</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

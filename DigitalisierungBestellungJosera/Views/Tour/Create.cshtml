@@ -1,0 +1,48 @@
+﻿@model DigitalisierungBestellungJosera.Models.Tour
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Neue Tour erstellen</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datum" class="control-label"></label>
+                <input asp-for="Datum" class="form-control" />
+                <span asp-validation-for="Datum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxLadegewicht_in_KG" class="control-label"></label>
+                <input asp-for="MaxLadegewicht_in_KG" class="form-control" />
+                <span asp-validation-for="MaxLadegewicht_in_KG" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxStellplatz" class="control-label"></label>
+                <input asp-for="MaxStellplatz" class="form-control" />
+                <span asp-validation-for="MaxStellplatz" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Erstellen" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="link" asp-action="Index">Zurück</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

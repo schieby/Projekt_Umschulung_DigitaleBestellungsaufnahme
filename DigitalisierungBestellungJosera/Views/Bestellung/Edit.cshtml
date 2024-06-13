@@ -1,0 +1,49 @@
+﻿@model DigitalisierungBestellungJosera.Models.Bestellung
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Bestellungen bearbeiten</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="KundeId" class="control-label"></label>
+                <select asp-for="KundeId" class="form-control" asp-items="ViewBag.KundeId"></select>
+                <span asp-validation-for="KundeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TourId" class="control-label"></label>
+                <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+                <span asp-validation-for="TourId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BestellungsNr" class="control-label"></label>
+                <input asp-for="BestellungsNr" class="form-control" />
+                <span asp-validation-for="BestellungsNr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bestelldatum" class="control-label"></label>
+                <input asp-for="Bestelldatum" class="form-control" />
+                <span asp-validation-for="Bestelldatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Speichern" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="link" asp-action="Index">Zurück</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
