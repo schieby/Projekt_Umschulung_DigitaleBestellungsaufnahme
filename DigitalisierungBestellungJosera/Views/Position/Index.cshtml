@@ -41,7 +41,9 @@
     <tbody> *@
 @foreach (var item in Model) {
         <tr>
-            
+            <td>
+                <strong>Tour: </strong><div>@Html.DisplayFor(modelItem => item.Bestellung.Tour.Name)</div>
+            </td>
             <td>
                 <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.Bestellung.BestellungsNr)</div>
             </td>

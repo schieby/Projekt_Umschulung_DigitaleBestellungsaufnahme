@@ -22,7 +22,11 @@ namespace DigitalisierungBestellungJosera.Controllers
         // GET: Position
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Position.Include(p => p.Bestellung).Include(p => p.Produkt).Include(p => p.Bestellung.Kunde);
+            var applicationDbContext = _context.Position
+                .Include(p => p.Bestellung)
+                .ThenInclude(p=> p.Tour)
+                .Include(p => p.Produkt)
+                .Include(p => p.Bestellung.Kunde);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -286,12 +290,40 @@ namespace DigitalisierungBestellungJosera.Controllers
                         ViewData["ProduktId"] = new SelectList(_context.Produkt, "Id", "Name", position.ProduktId);
                         return View(position);
                     }
-                    // Überprüfen Sie, ob das maximale Stellplatzlimit erreicht ist
-                    if (bestellung.Tour.maxstellplatzerreicht())
+                    
+                    // Berechnen Sie die neuen Stellplätze, indem Sie die aktuelle Position entfernen und die neue hinzufügen
+                    int neueStellplätze = bestellung.Tour.Bestellungen.Sum(b =>
+                        b.Positionen.Sum(p => p.Produkt.Gewicht_in_KG * p.Stückzahl / 1000));
+
+                    neueStellplätze -= originalPosition.Produkt.Gewicht_in_KG * originalPosition.Stückzahl / 1000;
+                    neueStellplätze += produkt.Gewicht_in_KG * position.Stückzahl / 1000;
+
+                    // Prüfen, ob das Stellplatzlimit erreicht ist
+                    if (neueStellplätze > bestellung.Tour.MaxStellplatz)
                     {
-                        // Wenn das Limit erreicht ist, fügen Sie die Position trotzdem hinzu, aber zeigen Sie eine Meldung an
                         TempData["StellplatzLimitError"] = "Das maximale Stellplatzlimit wurde erreicht.";
+                        ViewData["BestellungId"] = new SelectList(
+                            _context.Bestellung
+                                .Include(b => b.Kunde)
+                                .Select(b => new
+                                {
+                                    b.Id,
+                                    DisplayText = b.BestellungsNr + " | " + b.Kunde.Vorname + " " + b.Kunde.Name
+                                }),
+                            "Id",
+                            "DisplayText", position.BestellungId);
+                        ViewData["ProduktId"] = new SelectList(
+                            _context.Produkt
+                                .Select(p => new
+                                {
+                                    p.Id,
+                                    DisplayText = p.Name + " | " + p.Gewicht_in_KG + " Kg"
+                                }),
+                            "Id",
+                            "DisplayText", position.ProduktId);
+                        return View(position);
                     }
+
                     // Änderungen an der Originalposition vornehmen und im Kontext aktualisieren
                     originalPosition.ProduktId = position.ProduktId;
                     originalPosition.Stückzahl = position.Stückzahl;
