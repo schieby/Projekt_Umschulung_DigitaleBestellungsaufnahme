@@ -9,7 +9,7 @@
 <p>
     <a class="link" asp-action="Create">Neue Position hinzufügen</a>
 </p>
-
+@* Ausgabe der TempData Meldung *@
 @if (TempData.ContainsKey("StellplatzLimitError"))
 {
     <div class="alert alert-alert" role="alert">
@@ -42,13 +42,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <strong>Tour: </strong><div>@Html.DisplayFor(modelItem => item.Bestellung.Tour.Name)</div>
+                <strong>Tour: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Bestellung.Tour.Name)</div>
             </td>
             <td>
-                <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.Bestellung.BestellungsNr)</div>
+                <strong>PositionsNr: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.PositionsNr)</div>
             </td>
             <td>
-                <strong>Kunde: </strong><div>
+                <strong>BestellNr: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Bestellung.BestellungsNr)</div>
+            </td>
+            <td>
+                <strong>Kunde: </strong><div class="schrift">
                     @Html.DisplayFor(modelItem => item.Bestellung.Kunde.Vorname)
                     @Html.DisplayFor(modelItem => item.Bestellung.Kunde.Name)
                 </div>
@@ -56,9 +59,9 @@
             <td>
                 <div class="product-info">
                 <div class="position">
-                        <span><strong>Produkt: </strong><div>@Html.DisplayFor(modelItem => item.Produkt.Name)</div></span>
-                        <span><strong>ChargeNr: </strong><div>@Html.DisplayFor(modelItem => item.Produkt.ChargeNr)</div></span>
-                        <span><strong>Stückzahl: </strong><div>@Html.DisplayFor(modelItem => item.Stückzahl) stk</div></span>
+                        <span><strong>Produkt: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Produkt.Name)</div></span>
+                        <span><strong>ChargeNr: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Produkt.ChargeNr)</div></span>
+                        <span><strong>Stückzahl: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Stückzahl) stk</div></span>
                 </div>
                 </div>
             </td>

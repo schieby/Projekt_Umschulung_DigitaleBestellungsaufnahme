@@ -9,6 +9,7 @@
 <p>
     <a class="link" asp-action="Create">Neue Tour erstellen</a>
 </p>
+
 <div class="table-responsive">
     <table class="table">
        @*  <thead>
@@ -26,12 +27,12 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td><strong>Tour: </strong> <div>@Html.DisplayFor(modelItem => item.Name)</div></td>
-                    <td><strong>Datum: </strong> <div>@Html.DisplayFor(modelItem => item.Datum)</div></td>
-                    <td><strong>aktuelles Gewicht: </strong> <div>@Html.DisplayFor(modelItem => item.aktuellegewicht) Kg</div></td>
-                    <td><strong>max Ladegewicht: </strong> <div>@Html.DisplayFor(modelItem => item.MaxLadegewicht_in_KG) Kg</div></td>
-                    <td><strong>aktueller Stellplatz: </strong> <div>@Html.DisplayFor(modelItem => item.AktuellerStellplatz)</div></td>
-                    <td><strong>max Stellplatz: </strong> <div>@Html.DisplayFor(modelItem => item.MaxStellplatz)</div></td>
+                    <td><strong>Tour: </strong> <div class="schrift">@Html.DisplayFor(modelItem => item.Name)</div></td>
+                    <td><strong>Datum: </strong> <div class ="schrift">@Html.DisplayFor(modelItem => item.Datum)</div></td>
+                    <td><strong>aktuelles Gewicht: </strong> <div class="schrift">@Html.DisplayFor(modelItem => item.aktuellegewicht) Kg</div></td>
+                    <td><strong>max Ladegewicht: </strong> <div class="schrift">@Html.DisplayFor(modelItem => item.MaxLadegewicht_in_KG) Kg</div></td>
+                    <td><strong>aktueller Stellplatz: </strong> <div class="schrift">@Html.DisplayFor(modelItem => item.AktuellerStellplatz)</div></td>
+                    <td><strong>max Stellplatz: </strong> <div class="schrift">@Html.DisplayFor(modelItem => item.MaxStellplatz)</div></td>
                     <td class ="actions-cell">
                         <a class="link" asp-action="Edit" asp-route-id="@item.ID">Bearbeiten</a> |
                         <a class="link" asp-action="Details" asp-route-id="@item.ID">Details</a> |

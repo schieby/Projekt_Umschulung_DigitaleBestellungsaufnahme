@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DigitalisierungBestellungJosera.Models
 {
@@ -14,5 +15,8 @@ namespace DigitalisierungBestellungJosera.Models
         //Navigation-Properties
         public Bestellung? Bestellung { get; set; }
         public Produkt? Produkt { get; set; }
+        // Positionsnummer (PositionsNr)
+        [NotMapped] // Nicht in der Datenbank speichern
+        public int PositionsNr { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DigitalisierungBestellungJosera.Data;
 using DigitalisierungBestellungJosera.Models;
+using DigitalisierungBestellungJosera.Data.Migrations;
 
 namespace DigitalisierungBestellungJosera.Controllers
 {
@@ -34,7 +35,7 @@ namespace DigitalisierungBestellungJosera.Controllers
 
             foreach (var tour in tours)
             {
-                tour.aktuellegewicht = tour.aktuellegewichtberechnen();                       
+                tour.aktuellegewicht = tour.aktuellegewichtberechnen();
             }
 
             return View(tours);
@@ -55,7 +56,7 @@ namespace DigitalisierungBestellungJosera.Controllers
                 .Include(b => b.Bestellungen)
                 .ThenInclude(b => b.Positionen)
                 .ThenInclude(b => b.Produkt)
-                
+
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (tour == null)
             {
@@ -119,12 +120,40 @@ namespace DigitalisierungBestellungJosera.Controllers
             {
                 try
                 {
-                    _context.Update(tour);
+                    // Laden der Tour mit allen relevanten Beziehungen
+                    var existingTour = await _context.Tour
+                        .Include(t => t.Bestellungen)
+                            .ThenInclude(b => b.Positionen)
+                                .ThenInclude(p => p.Produkt)
+                        .FirstOrDefaultAsync(t => t.ID == id);
+
+                    if (existingTour == null)
+                    {
+                        return NotFound();
+                    }
+
+                    int aktuellesGewicht = existingTour.aktuellegewichtberechnen();
+
+                    if (aktuellesGewicht > tour.MaxLadegewicht_in_KG)
+                    {
+                        ModelState.AddModelError("", $"Das aktuelle Gewicht der Tour ({aktuellesGewicht} kg) " +
+                            $"überschreitet das neue maximale Ladegewicht ({tour.MaxLadegewicht_in_KG} kg). " +
+                            $"Bitte erhöhen Sie das maximale Ladegewicht oder entfernen Sie einige Bestellungen.");
+                        return View(tour);
+                    }
+
+                    // Aktualisieren der Tour-Instanz
+                    existingTour.Name = tour.Name;
+                    existingTour.Datum = tour.Datum;
+                    existingTour.MaxLadegewicht_in_KG = tour.MaxLadegewicht_in_KG;
+                    existingTour.MaxStellplatz = tour.MaxStellplatz;
+
+                    _context.Update(existingTour);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TourExists(tour.ID))
+                    if (!TourExists(id))
                     {
                         return NotFound();
                     }
@@ -137,6 +166,7 @@ namespace DigitalisierungBestellungJosera.Controllers
             }
             return View(tour);
         }
+               
 
         // GET: Tour/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -146,8 +176,8 @@ namespace DigitalisierungBestellungJosera.Controllers
                 return NotFound();
             }
 
-            var tour = await _context.Tour
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var tour = await _context.Tour.FirstOrDefaultAsync(m => m.ID == id);
+
             if (tour == null)
             {
                 return NotFound();
@@ -156,18 +186,18 @@ namespace DigitalisierungBestellungJosera.Controllers
             return View(tour);
         }
 
-        // POST: Tour/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tour = await _context.Tour.FindAsync(id);
+
             if (tour != null)
             {
                 _context.Tour.Remove(tour);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -6,7 +6,7 @@
 
 <h1>Bestellungs Details</h1>
 
-<div>
+<div class="schrift">
     
     <hr />
     <dl class="row">
@@ -70,11 +70,11 @@
                         @foreach (var position in Model.Positionen)
                         {
                             <div class="position">
-                                <span><strong>Produkt: </strong>@position.Produkt.Name</span>
+                                <span class="schrift"><strong>Produkt: </strong>@position.Produkt.Name</span>
 
-                                <span><strong>ChargeNr: </strong>ChargeNr: @position.Produkt.ChargeNr|</span>
+                                <span class="schrift"><strong>ChargeNr: </strong>ChargeNr: @position.Produkt.ChargeNr|</span>
 
-                                <span><strong>Stückzahl: </strong> @position.Stückzahl stk|</span>
+                                <span class="schrift"><strong>Stückzahl: </strong> @position.Stückzahl stk|</span>
                             </div>
                         }
                     </div>

@@ -6,11 +6,13 @@
 
 html {
     font-size: 20px;
+    
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 19px;
+        
     }
 }
 
@@ -32,6 +34,7 @@ body {
     color: var(--text-black);
     margin-bottom: 60px;
     font-size: 1rem;
+    
 }
 
 @media (max-width: 575.98px) {
@@ -89,9 +92,6 @@ body {
         font-size: 1rem;
     }
 }
-
-
-
 
 .position {
     display: flex;
@@ -184,4 +184,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: larger;
     font-weight: bolder;
     color: var(--header-red);    
+}
+.schrift{
+    font-weight:500;
 }

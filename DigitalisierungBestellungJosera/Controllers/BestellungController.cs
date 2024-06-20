@@ -23,7 +23,9 @@ namespace DigitalisierungBestellungJosera.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Bestellung.Include(b => b.Kunde).Include(b => b.Tour);
+            var applicationDbContext = _context.Bestellung
+                .Include(b => b.Kunde)
+                .Include(b => b.Tour);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -52,14 +54,22 @@ namespace DigitalisierungBestellungJosera.Controllers
         // GET: Bestellung/Create
         public IActionResult Create()
         {
+            // Die ViewData["KundeId"] wird mit einer SelectListe die Kundeninformationen enthält vorbereitet
+            // Das Dropdownmenü im View wird mit dieser Liste gefüllt
             ViewData["KundeId"] = new SelectList(
         _context.Kunde.Select(k => new
         {
             k.Id,
             FullName = k.Vorname + " " + k.Name + " | " + k.PLZ + " " + k.Ort + " " + k.Straße + " " + k.Nr
+            // Verbindung des Namen und der Adresse im Format:
+            // Vorname Nachname | PLZ Ort Straße Nr
         }),
-        "Id", "FullName");
+        "Id", "FullName");// Was im Dropdownmenu angezeigt wird
+
+            // Die ViewData["TourId"] wird mit einer SelectListe die Tourinformationen enthält vorbereitet
+            // Das Dropdownmenü im View wird mit dieser Liste gefüllt
             ViewData["TourId"] = new SelectList(_context.Tour, "ID", "Name");
+            // Rückgabe der View zu Erstellung einer neuen Bestellung
             return View();
         }
 
@@ -70,21 +80,30 @@ namespace DigitalisierungBestellungJosera.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,KundeId,TourId,BestellungsNr,Bestelldatum")] Bestellung bestellung)
         {
+            // Überprüfen der gültigkeit der Modelldaten
             if (ModelState.IsValid)
             {
+                //Hinzufügen des datenkontext zur Bestellung
                 _context.Add(bestellung);
+                // Asynchrones Speicher der Änderung in der Datenbank
                 await _context.SaveChangesAsync();
+                // Umleitung auf die Index View wenn das Speicher erfolgreich ist
                 return RedirectToAction(nameof(Index));
             }
+            // Bei ungültigem Modell wird die View erneut angezeigt
+            // das Dropdownmenü wird mit den bestehenden Werten gefüllt 
             ViewData["KundeId"] = new SelectList(
         _context.Kunde.Select(k => new
         {
             k.Id,
             FullName = k.Vorname + " " + k.Name + " | " + k.PLZ + " " + k.Ort + " " + k.Straße + " " + k.Nr
+            // Verbindung des Namen und der Adresse im Format:
+            // Vorname Nachname | PLZ Ort Straße Nr
         }),
-        "Id",
-        "FullName", bestellung.KundeId);
+        "Id","FullName", // Was im Dropdownmenu angezeigt wird
+        bestellung.KundeId);
             ViewData["TourId"] = new SelectList(_context.Tour, "ID", "Name", bestellung.TourId);
+            // Es wird die Bestellungs View zurückgegeben
             return View(bestellung);
         }
 

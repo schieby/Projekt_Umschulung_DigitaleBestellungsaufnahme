@@ -7,7 +7,7 @@
 
 <h1>Tour Details</h1>
 
-<div>
+<div class="schrift">
     
     <hr />
     <dl class="row">
@@ -61,13 +61,15 @@
                 {
                     <tr>
                         <td>
-                            <strong>Kunde: </strong><div>
+                            <strong>Kunde: </strong>
+                            <div class="schrift">
                                 @Html.DisplayFor(modelItem => item.Kunde.Vorname)
                                 @Html.DisplayFor(modelItem => item.Kunde.Name)
                             </div>
                         </td>
                         <td>
-                            <strong>Adresse: </strong><div>
+                            <strong>Adresse: </strong>
+                            <div class="schrift">
                                 @Html.DisplayFor(modelItem => item.Kunde.PLZ)
                                 @Html.DisplayFor(modelItem => item.Kunde.Ort)
                                 @Html.DisplayFor(modelItem => item.Kunde.Straße)
@@ -76,7 +78,7 @@
                         </td>
    
                         <td>
-        <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
+                            <strong>BestellNr: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
                         </td>
                         <td><strong>Bestellung: </strong></td>
     <td class="actions-cell">
@@ -86,11 +88,11 @@
                                 @foreach (var position in item.Positionen)
                                 {
                                     <div class="position">
-                                        <span>|@position.Produkt.Name</span>
-                                        
-                                        <span>|@position.Produkt.ChargeNr|</span>
-                                       
-                                        <span>@position.Stückzahl stk|</span>
+                                        <span class="schrift">|@position.Produkt.Name</span>
+
+                                        <span class="schrift">|@position.Produkt.ChargeNr|</span>
+
+                                        <span class="schrift">@position.Stückzahl stk|</span>
                                     </div>
                                 }
                             </div>

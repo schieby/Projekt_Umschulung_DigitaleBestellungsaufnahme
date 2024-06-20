@@ -17,9 +17,10 @@ namespace DigitalisierungBestellungJosera.Models
         [Display(Name = "belegte Stellplätze")]
         public int BelegteStellplätze { get; set; }
         [Display(Name = "aktuelle Stellplätze")]
+        
         public int AktuellerStellplatz
         {
-            get { return aktuellegewicht / 1000; }
+            get { return aktuellegewicht / 1000; }// berechnet den aktuellen Stellplatz ein Stellplatz entspricht 1000 kg
         }
         // Navigation
 
@@ -29,16 +30,16 @@ namespace DigitalisierungBestellungJosera.Models
         {
             aktuellegewicht = 0;
 
-            // Überprüfen Sie, ob Bestellungen vorhanden sind
+            // Überprüfung ob die Bestellungen vorhanden sind
             if (Bestellungen != null)
             {
-                // Berechnen Sie das Gewicht für jede Bestellung in der Tour
+                // Berechnung des Gewicht für jede Bestellung in der Tour
                 foreach (var bestellung in Bestellungen)
                 {
-                    // Überprüfen Sie, ob Positionen vorhanden sind
+                    // Überprüfung ob die Positionen vorhanden sind
                     if (bestellung.Positionen != null)
                     {
-                        // Berechnen Sie das Gewicht für jede Position in der Bestellung
+                        // Berechnung des Gewicht für jede Position in der Bestellung
                         foreach (var position in bestellung.Positionen)
                         {
                             // Produktgewicht * Stückzahl
@@ -51,8 +52,11 @@ namespace DigitalisierungBestellungJosera.Models
             return aktuellegewicht;
         }
         
+        // Überprüfung ob die maximalen Stellplätze erreicht sind
         public bool maxstellplatzerreicht()
         { 
+            // Gleicht die aktuellen Stellplätze mit den maximalen Stellplätzen ab
+            // gibt wahr oder falsch zurück
             return AktuellerStellplatz >= MaxStellplatz; 
         }
 

@@ -31,19 +31,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                    <strong>Tour: </strong><div>@Html.DisplayFor(modelItem => item.Tour.Name)</div>
+                    <strong>Tour: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Tour.Name)</div>
                 </td>
                 <td>
-                    <strong>Kunde: </strong><div>
+                    <strong>Kunde: </strong><div class="schrift">
                         @Html.DisplayFor(modelItem => item.Kunde.Vorname)
                         @Html.DisplayFor(modelItem => item.Kunde.Name)
                         </div>
                 </td>
             <td>
-                    <strong>BestellNr: </strong><div>@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
+                    <strong>BestellNr: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.BestellungsNr)</div>
             </td>
             <td>
-                    <strong>Bestelldatum: </strong><div>@Html.DisplayFor(modelItem => item.Bestelldatum)</div>
+                    <strong>Bestelldatum: </strong><div class="schrift">@Html.DisplayFor(modelItem => item.Bestelldatum)</div>
             </td>
             
             

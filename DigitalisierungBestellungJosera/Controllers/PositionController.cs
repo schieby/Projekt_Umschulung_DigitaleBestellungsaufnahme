@@ -22,16 +22,48 @@ namespace DigitalisierungBestellungJosera.Controllers
         // GET: Position
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Position
+            // Abrufen der Positionen aus der Datenbank mit allen erforderlichen Includes
+            var positions = await _context.Position
                 .Include(p => p.Bestellung)
-                .ThenInclude(p=> p.Tour)
+                .ThenInclude(p => p.Tour)
                 .Include(p => p.Produkt)
-                .Include(p => p.Bestellung.Kunde);
-            return View(await applicationDbContext.ToListAsync());
+                .Include(p => p.Bestellung.Kunde)
+                .ToListAsync();
+
+            if (positions.Any())
+            {
+                // Setzen der Positionsnummer basierend auf der Reihenfolge in der Liste
+                int positionCounter = 1;
+                int currentBestellungId = positions.First().BestellungId;
+
+                foreach (var position in positions)
+                {
+                    // Überprüfen, ob die Bestellung gewechselt hat
+                    if (position.BestellungId != currentBestellungId)
+                    {
+                        positionCounter = 1; // Zurücksetzen des Zählers für eine neue Bestellung
+                        currentBestellungId = position.BestellungId;
+                    }
+                    // Setzen der Positionsnummer und Erhöhen des Zählers
+                    position.PositionsNr = positionCounter++;
+                }
+
+                // Speichern der Änderungen in der Datenbank
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Handhaben des Falls, wenn keine Positionen vorhanden sind
+                ViewBag.Message = "Keine Positionen gefunden.";
+            }
+
+            // Rückgabe der View mit der Liste der Positionen
+            return View(positions);
         }
 
+
         // GET: Position/Details/5
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -90,12 +122,14 @@ namespace DigitalisierungBestellungJosera.Controllers
             
             if (ModelState.IsValid)
             {
-                // Laden Sie das Produkt, um das Gewicht zu überprüfen
+                // Prüfung des Gewichts des Produkts
                 var produkt = await _context.Produkt.FindAsync(position.ProduktId);
 
                 if (produkt == null)
                 {
+                    // Fehlermeldung wenn das Produkt nicht vorhanden ist
                     ModelState.AddModelError("", "Das ausgewählte Produkt existiert nicht.");
+                    // Dropdownmenü wird wieder mit Daten von Bestellung und Produkt gefüllt
                     ViewData["BestellungId"] = new SelectList(
                         _context.Bestellung
                             .Include(b => b.Kunde)
@@ -108,7 +142,7 @@ namespace DigitalisierungBestellungJosera.Controllers
                         "DisplayText", position.BestellungId);
                     ViewData["ProduktId"] = new SelectList(
        _context.Produkt
-       //.Include(b => b.Gewicht_in_KG)
+      
        .Select(b => new
        {
            b.Id,
@@ -119,7 +153,7 @@ namespace DigitalisierungBestellungJosera.Controllers
                     return View(position);
                 }
 
-                // Laden Sie die Bestellung, zu der diese Position gehört, einschließlich der Tour
+                // Laden der Bestellung und Tour zu der diese Position gehört
                 var bestellung = await _context.Bestellung
                     .Include(b => b.Tour)
                     .ThenInclude(p => p.Bestellungen)
@@ -129,18 +163,17 @@ namespace DigitalisierungBestellungJosera.Controllers
 
                 if (bestellung == null)
                 {
-                    return NotFound(); // Handhaben Sie den Fall, wenn die Bestellung nicht gefunden wird
+                    return NotFound();
                 }
 
-                // Berechnen Sie das aktuelle Gewicht der Tour
+                // Berechnung des aktuellen Gewichts der Tour
                 int aktuellegewicht = bestellung.Tour.aktuellegewichtberechnen();
                 
 
-                // Überprüfen Sie, ob das aktuelle Gewicht das maximale Gewicht überschreitet
+                // Validation des aktuellen Gewichts zum maximalen Gewicht
                 if (aktuellegewicht + (produkt.Gewicht_in_KG * position.Stückzahl) > bestellung.Tour.MaxLadegewicht_in_KG)
                 {
-                    // Handhaben Sie den Fall, wenn das Gewicht das maximale Gewicht überschreitet
-                    // Zum Beispiel, indem Sie eine Fehlermeldung anzeigen oder die Aktion abbrechen
+                    // Fehlermeldung bei überschreiten des maximalen Gewichts
                     ModelState.AddModelError("", "Das aktuelle Gewicht überschreitet das maximale Ladegewicht der Tour.");
                     ViewData["BestellungId"] = new SelectList(
                         _context.Bestellung
@@ -156,14 +189,14 @@ namespace DigitalisierungBestellungJosera.Controllers
                     return View(position);
                 }
 
-                // Überprüfen Sie, ob das maximale Stellplatzlimit erreicht ist
+                // Überprüfen ob das maximale Stellplatzlimit erreicht ist
                 if (bestellung.Tour.maxstellplatzerreicht())
                 {
-                    // Wenn das Limit erreicht ist, fügen Sie die Position trotzdem hinzu, aber zeigen Sie eine Meldung an
+                    // Wenn das Stellplatzlimit erreicht wurde eine Warnmeldung in TempData gespeichert
                     TempData["StellplatzLimitError"] = "Das maximale Stellplatzlimit wurde erreicht.";
                 }
 
-                // Fügen Sie die Position hinzu, wenn die Validierung erfolgreich ist
+                // Hinzufügen der Position wenn die Validation erfolgreich ist
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -257,25 +290,24 @@ namespace DigitalisierungBestellungJosera.Controllers
 
                     if (bestellung == null)
                     {
-                        return NotFound(); // Handhaben Sie den Fall, wenn die Bestellung nicht gefunden wird
+                        return NotFound();
                     }
 
                     int aktuellegewicht = bestellung.Tour.aktuellegewichtberechnen();                
                     
-                    // Überprüfen Sie, ob das aktuelle Gewicht das maximale Gewicht überschreitet
+                    // Überprüfung ob das aktuelle Gewicht das maximale Gewicht überschreitet
                     var produkt = await _context.Produkt.FindAsync(position.ProduktId);
                     if (produkt == null)
                     {
-                        return NotFound(); // Handhaben Sie den Fall, wenn das Produkt nicht gefunden wird
+                        return NotFound(); 
                     }
-                    // Anpassen des Aktuellengewichts auf basis der änderung der Stückzahl
+                    // Berechnung des neuen aktuellen gewichts, indem die aktuelle Position entfernen und die neue hinzufügt wird
                     int mengenänderung = position.Stückzahl - originalPosition.Stückzahl;
                     aktuellegewicht += mengenänderung * originalPosition.Produkt.Gewicht_in_KG;
 
                     if (aktuellegewicht > bestellung.Tour.MaxLadegewicht_in_KG)
                     {
-                        // Handhaben Sie den Fall, wenn das Gewicht das maximale Gewicht überschreitet
-                        // Zum Beispiel, indem Sie eine Fehlermeldung anzeigen oder die Aktion abbrechen
+                        // Fehlermeldung bei überschreiten des maximalen Gewichts
                         ModelState.AddModelError("", "Das aktuelle Gewicht überschreitet das maximale Ladegewicht der Tour.");
                         ViewData["BestellungId"] = new SelectList(
                             _context.Bestellung
@@ -291,14 +323,14 @@ namespace DigitalisierungBestellungJosera.Controllers
                         return View(position);
                     }
                     
-                    // Berechnen Sie die neuen Stellplätze, indem Sie die aktuelle Position entfernen und die neue hinzufügen
+                    // Berechnung der neuen Stellplätze, indem die aktuelle Position entfernen und die neue hinzufügt wird
                     int neueStellplätze = bestellung.Tour.Bestellungen.Sum(b =>
                         b.Positionen.Sum(p => p.Produkt.Gewicht_in_KG * p.Stückzahl / 1000));
 
                     neueStellplätze -= originalPosition.Produkt.Gewicht_in_KG * originalPosition.Stückzahl / 1000;
                     neueStellplätze += produkt.Gewicht_in_KG * position.Stückzahl / 1000;
 
-                    // Prüfen, ob das Stellplatzlimit erreicht ist
+                    // Validierung der Stellplätze
                     if (neueStellplätze > bestellung.Tour.MaxStellplatz)
                     {
                         TempData["StellplatzLimitError"] = "Das maximale Stellplatzlimit wurde erreicht.";
